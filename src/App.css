@@ -1,0 +1,57 @@
+h1{
+  color: rgb(255,255,255);
+  font-family: 'Dosis', sans-serif;
+  text-align: center;
+  margin: 2em 0 1em 0;
+}
+
+nav{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 3em;
+  width: 90%;
+}
+
+.items-area{
+  width: 90%;
+  height: 27em;
+  border: 2px solid rgb(255, 255, 255);
+  margin: auto;
+  border-radius: 10px;
+  padding: 1em;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.nav-button{
+  width: 170px;
+  height: 40px;
+  border: 0 ;
+  border-radius: 10px;
+  font-family: 'Dosis', sans-serif;
+  font-size: large;
+  font-weight: bold;
+  background-color: white;
+}
+
+.nav-button:hover{
+  border: 2px solid rgb(255, 255, 255);
+  background: rgb(27, 27, 27);
+  color:white;
+}
+
+.clear{
+  background-color: rgb(182, 4, 4);
+  color: rgb(255, 255, 255)
+}
+
+.clear:hover{
+  background-color: rgb(255, 255, 255);
+  color: rgb(182, 4, 4);
+  border: 2px solid rgb(182, 4, 4);
+}
+
