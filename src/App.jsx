@@ -4,23 +4,30 @@ import { StateItem } from './components/state';
 import './App.css';
 
 function App() {
-  const [states, setStates] = useState([]);
-  const [isWaitingForClick, setIsWaitingForClick] = useState(false);
-  const [newStateValue, setNewStateValue] = useState(''); 
+  const [states, setStates] = useState([])
+  const [isWaitingForClick, setIsWaitingForClick] = useState(false)
+  const [newStateValue, setNewStateValue] = useState('')
+  const [newKeyValue, setNewKeyValue] = useState('')
 
   const handleNewClick = () => {
-    const stateValue = prompt("Please enter the state's value", '');
-    if (stateValue) {
-      setNewStateValue(stateValue);
-      setIsWaitingForClick(true);
+    const stateValue = prompt("Please enter the state's value", '')
+    let timesRepeatedState = 0
+    for (let state of states){
+      timesRepeatedState = stateValue == state.value ? timesRepeatedState + 1 : timesRepeatedState   
+      // console.log('times repeated:', timesRepeatedState)
     }
-  };
+    let repeatedStateFlag = timesRepeatedState >= 1;
+    console.log(repeatedStateFlag)
+    setNewStateValue(stateValue);
+    setNewKeyValue(repeatedStateFlag ? `${stateValue}(${timesRepeatedState})` : stateValue);
+    setIsWaitingForClick(true);
+  }
 
   const handleAreaClick = (e) => {
     if (isWaitingForClick) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const rect = e.currentTarget.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
 
       const newStateObject = {
         value: newStateValue,
@@ -29,19 +36,27 @@ function App() {
         connections: [],
         connectionsValue: [],
         initial: false,
-        final: false
+        final: false, 
+        key : newKeyValue
       };
 
-      setStates([...states, newStateObject]); // Agregar el nuevo estado a la lista
-      setIsWaitingForClick(false); // Desactivar la espera de un nuevo click
+      setStates([...states, newStateObject])
+      setIsWaitingForClick(false)
     }
   };
+
+  const clearHandler = () =>{
+    setStates([])
+    setNewStateValue('')
+    setNewKeyValue('')
+    setIsWaitingForClick(false)
+  } 
 
   return (
     <>
       <h1>Automaton Drawer</h1>
       <nav>
-        <Button className='nav-button clear' clickHandler={() => {}} value='Clear' />
+        <Button className='nav-button clear' clickHandler={clearHandler} value='Clear' />
         <Button className='nav-button' clickHandler={handleNewClick} value='New' />
         <Button className='nav-button' clickHandler={() => {}} value='Link' />
         <Button className='nav-button' clickHandler={() => {}} value='Delete' />
@@ -54,9 +69,9 @@ function App() {
         className="items-area"
         onClick={handleAreaClick}
       >
-        {states.map((state, index) => (
+        {states.map((state) => (
           <StateItem
-            key={index}
+            key={state.key}
             type="button"
             value={state.value}
             className='state-item'

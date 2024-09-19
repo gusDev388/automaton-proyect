@@ -1,6 +1,7 @@
 export const StateItem = ({ value, className, x_value, y_value }) => {
   return (
     <div
+      id = {value}
       className={className}
       style={{
         position: 'absolute',
