@@ -1,8 +1,9 @@
-export const StateItem = ({ value, className, x_value, y_value }) => {
+export const StateItem = ({ value, className, x_value, y_value, onClick, onDragStart}) => {
   return (
     <div
       id = {value}
       className={className}
+      onClick={onClick}
       style={{
         position: 'absolute',
         left: `${x_value}px`,
@@ -16,6 +17,8 @@ export const StateItem = ({ value, className, x_value, y_value }) => {
         justifyContent: 'center',
         color: 'white'
       }}
+      draggable
+      onDragStart={onDragStart}
     >
       {value}
     </div>

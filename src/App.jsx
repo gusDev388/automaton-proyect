@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from './components/button';
 import { StateItem } from './components/state';
 import './App.css';
@@ -8,18 +8,49 @@ function App() {
   const [isWaitingForClick, setIsWaitingForClick] = useState(false)
   const [newStateValue, setNewStateValue] = useState('')
   const [newKeyValue, setNewKeyValue] = useState('')
+  const [draggedState, setDraggedState] = useState(null)
+  const containerRef = useRef(null)
+
+  let clickTimeout
+
+  const clickStateHandler = (e, state) =>{
+    clearTimeout(clickTimeout)
+    let input = e.target.id
+    console.log('Valor del elemento clickeado:', input)
+     
+  }
+
+  const onDragStart = (e, state) => {
+    setDraggedState(state)
+  }
+
+  const onDragOver = (e) => {
+    e.preventDefault()
+  }
+
+  const onDrop = (e) => {
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const updatedStates = states.map((state) =>
+      state.key === draggedState.key ? { ...state, x_coord: x - 27.5, y_coord: y - 27.5 } : state
+    )
+
+    setStates(updatedStates)
+    setDraggedState(null)
+  }
 
   const handleNewClick = () => {
     const stateValue = prompt("Please enter the state's value", '')
     let timesRepeatedState = 0
     for (let state of states){
-      timesRepeatedState = stateValue == state.value ? timesRepeatedState + 1 : timesRepeatedState   
-      // console.log('times repeated:', timesRepeatedState)
+      timesRepeatedState = stateValue == state.value ? timesRepeatedState + 1 : timesRepeatedState
     }
-    let repeatedStateFlag = timesRepeatedState >= 1;
+    let repeatedStateFlag = timesRepeatedState >= 1
     console.log(repeatedStateFlag)
     setNewStateValue(stateValue);
-    setNewKeyValue(repeatedStateFlag ? `${stateValue}(${timesRepeatedState})` : stateValue);
+    setNewKeyValue(repeatedStateFlag ? `${stateValue}(${timesRepeatedState})` : stateValue)
     setIsWaitingForClick(true);
   }
 
@@ -34,7 +65,6 @@ function App() {
         x_coord: x - 27.5,
         y_coord: y - 27.5,
         connections: [],
-        connectionsValue: [],
         initial: false,
         final: false, 
         key : newKeyValue
@@ -50,7 +80,8 @@ function App() {
     setNewStateValue('')
     setNewKeyValue('')
     setIsWaitingForClick(false)
-  } 
+  }
+
 
   return (
     <>
@@ -68,15 +99,20 @@ function App() {
         id="items-area"
         className="items-area"
         onClick={handleAreaClick}
+        ref = {containerRef}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
       >
         {states.map((state) => (
           <StateItem
             key={state.key}
-            type="button"
             value={state.value}
             className='state-item'
             x_value={state.x_coord}
             y_value={state.y_coord}
+            onClick = {(e) => clickStateHandler(e, state)}
+            onDragStart = {(e) => onDragStart(e,state)}
+            draggable
           >
             {console.log(states)}
           </StateItem>
