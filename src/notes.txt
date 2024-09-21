@@ -1,0 +1,5 @@
+21/09
+the clear doesnt work now that I have states defined in components
+
+the initial button is disabled in other buttons even if isn't initial 
+(needs to be avalible if state is not final)

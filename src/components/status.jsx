@@ -1,12 +1,30 @@
+import { useState } from "react"
+
 export const StatusMenu = ({clickedState, setInitial, setFinal}) =>{
-    let btnSetInitClass = 'btnInitial'
-    let buttonMessage = 'Set as'
-    if(clickedState.initial){
-        btnSetInitClass = 'btnInitial disabled'
+    // let btnSetInitClass = 'btnInitial'
+    // let buttonMessage = 'Set as'
+    // if(clickedState.initial){
+    //     btnSetInitClass = 'btnInitial disabled'
+    // }
+    // if(clickedState.final){
+    //     buttonMessage = 'Remove'
+    // }
+    const [isInitial, setIsInitial] = useState(clickedState.isInitial)
+    const [isFinal, setIsFinal] = useState(clickedState.isInitial)
+
+    let btnSetInitClass = isInitial ? 'btnInitial disabled' : 'btnInitial'
+    let buttonMessage = isFinal ? 'Remove' : 'Set as'
+    
+    const handleSetInitial = () =>{
+        setIsInitial(true)
+        setInitial()
     }
-    if(clickedState.final){
-        buttonMessage = 'Remove'
+
+    const handleSetFinal = () =>{
+        setIsFinal(!isFinal)
+        setFinal()
     }
+
     return(
         <div className="context-menu">
             <h3>
@@ -26,11 +44,11 @@ export const StatusMenu = ({clickedState, setInitial, setFinal}) =>{
             >
                 {clickedState.value}
             </div>
-            <button className={btnSetInitClass} onClick={setInitial}>
+            <button className={btnSetInitClass} onClick={handleSetInitial}>
                 <img src="src/assets/initial.svg" alt="" className="icon" />
                 Set as Initial
             </button>
-            <button className="btnFinal" onClick={setFinal}>
+            <button className="btnFinal" onClick={handleSetFinal}>
                 <img src="src/assets/final.svg" alt="" className="icon" />
                 {buttonMessage} Final
             </button>

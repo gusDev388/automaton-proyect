@@ -53,7 +53,7 @@ function App() {
     const updateFinal = states.map((state) => {
       if(state.key === clickedState.key){
         if(state.final){
-          alert(`Removed status of final to: ${clickedState.value}`)
+          // alert(`Removed status of final to: ${clickedState.value}`)
           return {...state, final: false}
         }
         else{
@@ -107,8 +107,8 @@ function App() {
 
       const newStateObject = {
         value: newStateValue,
-        x_coord: x - 27.5,
-        y_coord: y - 27.5,
+        x_coord: x - 32.5,
+        y_coord: y - 32.5,
         connections: [],
         initial: false,
         final: false, 
@@ -159,6 +159,7 @@ function App() {
         {states.map((state, index) => (
           <StateItem
             key={index}
+            state = {state}
             value={state.value}
             id = {state.key}
             className='state-item'
