@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from './components/button';
 import { StateItem } from './components/state';
+import { Menu } from './components/contextMenu';
 import './App.css';
 
 function App() {
@@ -9,15 +10,34 @@ function App() {
   const [newStateValue, setNewStateValue] = useState('')
   const [newKeyValue, setNewKeyValue] = useState('')
   const [draggedState, setDraggedState] = useState(null)
+  const [hasInitial, setHasInitial] = useState(false)
   const containerRef = useRef(null)
 
-  let clickTimeout
+  
 
-  const clickStateHandler = (e, state) =>{
-    clearTimeout(clickTimeout)
-    let input = e.target.id
-    console.log('Valor del elemento clickeado:', input)
+  const overStateHandler = (e, state) =>{
+    
      
+  }
+
+  const setAsInitial = (overState) =>{
+    if (hasInitial == false){
+      const updateInitial = states.map((state) =>
+        state.key === overState.key ? {...state, initial: true} : false
+      )
+      setStates(updateInitial)
+      hasInitial(true)
+    }else{
+      alert('Automaton already has a initial state')
+    }
+    
+      
+  }
+  const setAsFinal = (overState) =>{
+    const updateFinal = states.map((state) =>
+      state.key === overState.key ? {...state, final: true} : false
+    )
+    setStates(updateFinal)
   }
 
   const onDragStart = (e, state) => {
@@ -110,13 +130,18 @@ function App() {
             className='state-item'
             x_value={state.x_coord}
             y_value={state.y_coord}
-            onClick = {(e) => clickStateHandler(e, state)}
+            onMouseOver = {(e) => overStateHandler(e, state)}
             onDragStart = {(e) => onDragStart(e,state)}
             draggable
           >
             {console.log(states)}
           </StateItem>
         ))}
+      </div>
+      <div>
+        <Menu>
+          
+        </Menu>
       </div>
     </>
   );
