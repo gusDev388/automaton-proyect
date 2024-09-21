@@ -1,9 +1,8 @@
-export const StateItem = ({ value, className, x_value, y_value, onMouseOver, onDragStart}) => {
+export const StateItem = ({ value, id, className, x_value, y_value, onMouseOver, onDragStart}) => {
   return (
     <div
-      id = {value}
+      id = {id}
       className={className}
-      // onAuxClick={onMouseOver}
       onClick={onMouseOver}
       style={{
         position: 'absolute',
@@ -16,7 +15,8 @@ export const StateItem = ({ value, className, x_value, y_value, onMouseOver, onD
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: 'white'
+        color: 'white',
+        cursor: 'grab'
       }}
       draggable
       onDragStart={onDragStart}

@@ -26,7 +26,6 @@ nav{
   overflow: hidden;
 }
 
-
 .nav-button{
   width: 170px;
   height: 40px;
@@ -55,3 +54,59 @@ nav{
   border: 2px solid rgb(182, 4, 4);
 }
 
+.tables-wrapper{
+  display: flex;
+  flex-direction: column;
+  height: 20em;
+  width: 70%;
+  border: 2px solid rgb(255, 4, 4);
+  margin: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.context-menu{
+  padding: 1em;
+  color: white;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 90%;
+  gap: 1em;
+  align-items: center;
+}
+
+.context-menu img{
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0 10px 0 0;
+}
+
+.context-menu button{
+  width: 170px;
+  height: 40px;
+  border: 0;
+  font-size: large;
+  font-weight: bold;
+  border-radius: 10px;
+ }
+
+.context-menu button:hover{
+  border: 2px solid rgb(255, 255, 255);
+  background: rgb(27, 27, 27);
+  color:white;
+ }
+
+.context-menu h3{
+  width: 100%;
+  text-align: left;
+}
+
+.disabled{
+  background-color: #8c8c8c;
+  color: #3c3c3c;
+  pointer-events: none;
+}

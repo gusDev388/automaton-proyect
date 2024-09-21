@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Button } from './components/button';
 import { StateItem } from './components/state';
-import { Menu } from './components/contextMenu';
+import { StatusMenu } from './components/status';
 import './App.css';
 
 function App() {
@@ -9,34 +9,59 @@ function App() {
   const [isWaitingForClick, setIsWaitingForClick] = useState(false)
   const [newStateValue, setNewStateValue] = useState('')
   const [newKeyValue, setNewKeyValue] = useState('')
+  const [clickedState, setClickedState] = useState({
+    value: 'None',
+    x_coord: 0,
+    y_coord: 0,
+    connections: [],
+    initial: false,
+    final: false, 
+  })
   const [draggedState, setDraggedState] = useState(null)
   const [hasInitial, setHasInitial] = useState(false)
   const containerRef = useRef(null)
 
-  
 
   const overStateHandler = (e, state) =>{
-    
-     
+    setClickedState(state)
   }
 
-  const setAsInitial = (overState) =>{
+  const setAsInitial = (clickedState) =>{
     if (hasInitial == false){
       const updateInitial = states.map((state) =>
-        state.key === overState.key ? {...state, initial: true} : false
+        state.key === clickedState.key ? {...state, initial: true} : state
       )
       setStates(updateInitial)
-      hasInitial(true)
+      setHasInitial(true)
+      console.log(states)
     }else{
-      alert('Automaton already has a initial state')
-    }
-    
-      
+      const updateInitial = states.map((state) => {
+        if (state.initial === true){
+          return { ...state, initial: false }
+        }
+        if (state.key === clickedState.key){
+          return { ...state, initial: true }
+        }
+        return state
+      })
+      setStates(updateInitial)
+      setHasInitial(true)
+    }  
   }
-  const setAsFinal = (overState) =>{
-    const updateFinal = states.map((state) =>
-      state.key === overState.key ? {...state, final: true} : false
-    )
+
+  const setAsFinal = (clickedState) =>{
+    const updateFinal = states.map((state) => {
+      if(state.key === clickedState.key){
+        if(state.final){
+          alert(`Removed status of final to: ${clickedState.value}`)
+          return {...state, final: false}
+        }
+        else{
+          return {...state, final: true}
+        }
+      }
+      return state
+    })
     setStates(updateFinal)
   }
 
@@ -100,6 +125,14 @@ function App() {
     setNewStateValue('')
     setNewKeyValue('')
     setIsWaitingForClick(false)
+    setClickedState({
+      value: 'None',
+      x_coord: 0,
+      y_coord: 0,
+      connections: [],
+      initial: false,
+      final: false, 
+    })
   }
 
 
@@ -123,10 +156,11 @@ function App() {
         onDrop={onDrop}
         onDragOver={onDragOver}
       >
-        {states.map((state) => (
+        {states.map((state, index) => (
           <StateItem
-            key={state.key}
+            key={index}
             value={state.value}
+            id = {state.key}
             className='state-item'
             x_value={state.x_coord}
             y_value={state.y_coord}
@@ -138,11 +172,17 @@ function App() {
           </StateItem>
         ))}
       </div>
-      <div>
-        <Menu>
-          
-        </Menu>
+      <div className='tables-wrapper'>
+        <StatusMenu
+          clickedState = {clickedState}
+          setInitial = {(e) => setAsInitial(clickedState)}
+          setFinal = {(e) => setAsFinal(clickedState)}
+        >
+        </StatusMenu>
       </div>
+      <footer>
+        asd
+      </footer>
     </>
   );
 }
